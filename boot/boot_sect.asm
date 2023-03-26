@@ -15,16 +15,20 @@
     mov bx, GOODBYE_MSG
     call print_string
 
+    ; Print a hex value
+    mov dx, 0x1fb6
+    call print_hex
+
     jmp $
 
 %include "bios_print.asm"
 
 ; Data
 HELLO_MSG:
-    db 'Hello, World!', 0xa, 0
+    db 'Hello, World!', 0xd, 0xa, 0
 
 GOODBYE_MSG:
-    db 'Goodbye!', 0xa, 0
+    db 'Goodbye!', 0xd, 0xa, 0
 
 times 510-($-$$) db 0 ; Pad zeros up to 510 bytes
 dw 0xaa55 ; Last two bytes are the magic number so BIOS knows we are a boot sector.
