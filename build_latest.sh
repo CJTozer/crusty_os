@@ -2,6 +2,11 @@
 
 . .os_test_vars
 
-sudo cp $os_dir/src/boot_sect.asm $tmp_dir/
-sudo chown chris:chris $tmp_dir/boot_sect.asm
-nasm -o boot_sect.bin $tmp_dir/boot_sect.asm
+for f in $(sudo ls $os_dir/boot/)
+do
+    sudo cp $os_dir/boot/$f $tmp_dir/
+    sudo chown chris:chris $tmp_dir/$f
+    echo $f
+done
+
+nasm -I$tmp_dir -o boot_sect.bin $tmp_dir/boot_sect.asm
