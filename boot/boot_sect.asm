@@ -50,3 +50,5 @@ MSG_PROTECTED_MODE_BOOT: db 'Switched to 32-bit protected mode...', 0xd, 0xa, 0
 ; Bootsector padding
 times 510-($-$$) db 0 ; Pad zeros up to 510 bytes
 dw 0xaa55 ; Last two bytes are the magic number so BIOS knows we are a boot sector.
+
+times 1024 db 0 ; Make some space?

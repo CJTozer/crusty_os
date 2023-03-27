@@ -10,5 +10,5 @@ function grab_file() {
 }
 
 grab_file update_files.sh
-grab_file build_latest.sh
 grab_file bochsrc
+grab_file os-image
