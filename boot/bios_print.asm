@@ -17,6 +17,7 @@ print_string_end:
     popa
     ret
 
+; TODO just push each nibble onto the stack?
 ; Print the hex value in register dx
 print_hex:
     pusha
