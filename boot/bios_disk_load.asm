@@ -18,7 +18,7 @@ disk_load:
 
 disk_error:
     mov bx, DISK_ERROR_MESSAGE
-    call print_string
+    call bios_print_string
     jmp $
 
 DISK_ERROR_MESSAGE db "Disk read error!", 0xd, 0xa, 0
