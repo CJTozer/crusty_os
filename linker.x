@@ -2,7 +2,11 @@
 OUTPUT_FORMAT(binary)
 SECTIONS
 {
-  .text 0x1000 : { *(.text) }
+  .text 0x1000 :
+    {
+        *(.text.main);
+        *(.text*);
+    }
   .data : { *(.data) *(.bss) }
   /DISCARD/ : { *(.eh_frame) }
 }

@@ -5,10 +5,11 @@
 sd=$(dirname "$0")
 
 function grab_file() {
-    sudo cp $os_dir/$1 $sd/
-    sudo chown $user:$user $1
+    target=$(basename $1)
+    sudo cp $os_dir/$1 $sd/$target
+    sudo chown $user:$user $target
 }
 
 grab_file update_files.sh
 grab_file bochsrc
-grab_file os-image
+grab_file output/os-image
