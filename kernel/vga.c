@@ -1,8 +1,9 @@
-#include <stdint.h>
+#include "common.h"
 #include "vga.h"
 #include "low_level.h"
+#include "memory.h"
 
-struct video DISPLAY = {
+vga_video_t DISPLAY = {
     (uint8_t *)0xb8000,
     80,
     25,
@@ -43,6 +44,15 @@ void print_char(uint8_t c, uint8_t attributes)
 uint32_t get_screen_offset(uint16_t col, uint16_t row)
 {
     return (row * DISPLAY.columns + col) * 2; // 2 bytes per character
+}
+
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end)
+{
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
 }
 
 uint16_t get_cursor()
@@ -107,6 +117,22 @@ void clear_screen()
 
 uint16_t handle_scrolling(uint16_t offset)
 {
-    // TODO
-    return offset;
+    uint8_t *second_row, *last_row;
+    uint32_t size;
+
+    // Need space for the cursor too, so will scroll on the last char of the last line
+    if (offset < (DISPLAY.columns * DISPLAY.rows - 1) * 2)
+    {
+        return offset;
+    }
+
+    // We've scrolled off the bottom - shift all the rows up and add a blank row at the bottom
+    second_row = DISPLAY.base_pointer + 2 * DISPLAY.columns;
+    size = 2 * DISPLAY.columns * (DISPLAY.rows - 1);
+    memory_copy(second_row, DISPLAY.base_pointer, size);
+    last_row = DISPLAY.base_pointer + size;
+    memory_set(last_row, 0, DISPLAY.columns * 2);
+
+    // The new offset is the start of the last row, which is the size we've copied
+    return (uint16_t)size;
 }

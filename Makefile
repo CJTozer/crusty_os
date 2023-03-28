@@ -1,5 +1,6 @@
-KERNEL_SRCS := $(shell find kernel -name '*.c')
-KERNEL_OBJS := $(KERNEL_SRCS:kernel/%.c=output/%.o)
+KERNEL_SRCS = $(wildcard kernel/*.c)
+KERNEL_HDRS = $(wildcard kernel/*.h)
+KERNEL_OBJS := $(KERNEL_SRCS:kernel/%.c=output/%.o) output/interrupt.o
 INC_DIRS := kernel
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 CC_FLAGS := -ffreestanding -fno-pie -ffunction-sections -m32
@@ -19,9 +20,13 @@ output/kernel.bin: $(KERNEL_OBJS)
 	ld $(LD_FLAGS) -o $@ $(KERNEL_OBJS)
 
 # Make the kernel object files
-output/%.o: kernel/%.c
+output/%.o: kernel/%.c $(KERNEL_HDRS)
 	@mkdir -p output
 	gcc $(CC_FLAGS) $(INC_FLAGS) -o $@ -c $<
+
+output/%.o: kernel/%.asm
+	@mkdir -p output
+	nasm $< -f elf -o $@
 
 # Clean up the output directory
 clean:
