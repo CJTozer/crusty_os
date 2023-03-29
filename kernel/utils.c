@@ -23,7 +23,7 @@ void reverse_in_place(uint8_t *s)
 
 uint32_t int_to_ascii(int32_t n, char *s)
 {
-    uint32_t pos;
+    uint32_t pos = 0;
     bool sign;
 
     if (sign = (n < 0))
@@ -37,7 +37,7 @@ uint32_t int_to_ascii(int32_t n, char *s)
     if (sign)
         s[pos++] = '-';
 
-    s[pos] = '\0';
+    s[pos] = 0;
     reverse_in_place(s);
     return pos;
 }
