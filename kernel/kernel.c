@@ -1,16 +1,20 @@
 #include "common.h"
 #include "vga.h"
 #include "keyboard.h"
+#include "utils.h"
 
 void main();
 
 void main()
 {
+    uint8_t buffer[32];
+
     enable_cursor(9, 15);
     clear_screen();
     vga_print("98765\n4321");
     vga_print_at("ONE", 4, 4);
-    vga_print("123");
+    int_to_ascii(123, buffer);
+    vga_print(buffer);
     vga_print_at("MORE", 6, 6);
     vga_print("2121");
     vga_print_at("THING", 8, 8);
