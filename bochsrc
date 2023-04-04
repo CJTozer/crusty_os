@@ -4,3 +4,4 @@ floppya: 1_44=os-image, status=inserted
 boot: a
 display_library: sdl2
 magic_break: enabled=1
+clock: sync=realtime, time0=local
